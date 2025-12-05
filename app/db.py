@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Dict, List, Optional
 
 from fastapi import HTTPException, status
@@ -6,16 +7,36 @@ from supabase import Client, create_client
 from app.config import get_settings
 
 settings = get_settings()
+logger = logging.getLogger(__name__)
 
 # Initialize the Supabase client using project credentials
 supabase: Client = create_client(settings.supabase_url, settings.supabase_key)
 
 
+def _table(table_name: str) -> Any:
+    """Return a reference to a table within the configured schema."""
+
+    schema = (settings.database_name or "public").strip() or "public"
+    if schema not in ("public", "graphql_public"):
+        logger.warning(
+            "Unsupported Supabase schema '%s'; falling back to 'public'.", schema
+        )
+        schema = "public"
+
+    if schema == "public":
+        return supabase.table(table_name)
+
+    return supabase.schema(schema).table(table_name)
+
+
 def _listings_table() -> Any:
     """Return a reference to the listings table within the configured schema."""
-    if settings.database_name:
-        return supabase.schema(settings.database_name).table("listings")
-    return supabase.table("listings")
+    return _table("listings")
+
+
+def _cities_table() -> Any:
+    """Return a reference to the cities table within the configured schema."""
+    return _table("cities")
 
 
 def _cities_table() -> Any:

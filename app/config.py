@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     jwt_secret: str
     supabase_url: str
     supabase_key: str
-    database_name: str
+    database_name: str = "public"
     allowed_origins: List[str] = ["*"]
 
 
