@@ -18,6 +18,13 @@ def _listings_table() -> Any:
     return supabase.table("listings")
 
 
+def _cities_table() -> Any:
+    """Return a reference to the cities table within the configured schema."""
+    if settings.database_name:
+        return supabase.schema(settings.database_name).table("cities")
+    return supabase.table("cities")
+
+
 def _handle_response(response: Any) -> List[Dict[str, Any]]:
     """Validate a Supabase response and normalize errors into HTTPExceptions."""
     error: Optional[Any] = getattr(response, "error", None)
@@ -61,6 +68,12 @@ def create_listing(listing: Dict[str, Any]) -> Dict[str, Any]:
 def get_listings() -> List[Dict[str, Any]]:
     """Retrieve all listings from Supabase."""
     response = _listings_table().select("*").execute()
+    return _handle_response(response)
+
+
+def get_cities() -> List[Dict[str, Any]]:
+    """Retrieve all cities from Supabase ordered by name."""
+    response = _cities_table().select("*").order("name").execute()
     return _handle_response(response)
 
 
