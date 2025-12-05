@@ -22,3 +22,9 @@ class Listing(BaseModel):
     title: str
     description: Optional[str] = None
     price: Optional[float] = None
+
+
+class ListingUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[float] = None
