@@ -1,6 +1,6 @@
 fastapi
 uvicorn[standard]
 python-jose
-passlib[bcrypt]
+bcrypt
 pydantic-settings
 supabase
