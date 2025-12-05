@@ -39,13 +39,6 @@ def _cities_table() -> Any:
     return _table("cities")
 
 
-def _cities_table() -> Any:
-    """Return a reference to the cities table within the configured schema."""
-    if settings.database_name:
-        return supabase.schema(settings.database_name).table("cities")
-    return supabase.table("cities")
-
-
 def _handle_response(response: Any) -> List[Dict[str, Any]]:
     """Validate a Supabase response and normalize errors into HTTPExceptions."""
     error: Optional[Any] = getattr(response, "error", None)
