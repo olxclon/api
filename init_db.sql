@@ -23,6 +23,24 @@ VALUES
     ('Запоріжжя')
 ON CONFLICT (name) DO NOTHING;
 
+-- Categories table
+CREATE TABLE IF NOT EXISTS public.categories (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+-- Seed categories
+INSERT INTO public.categories (name)
+VALUES
+    ('Електроніка'),
+    ('Нерухомість'),
+    ('Транспорт'),
+    ('Дім і сад'),
+    ('Робота'),
+    ('Послуги')
+ON CONFLICT (name) DO NOTHING;
+
 -- Listings table
 CREATE TABLE IF NOT EXISTS public.listings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
