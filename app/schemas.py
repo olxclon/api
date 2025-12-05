@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel
@@ -21,6 +22,12 @@ class TokenData(BaseModel):
 
 class RefreshRequest(BaseModel):
     refresh_token: str
+
+
+class City(BaseModel):
+    id: Optional[str] = None
+    name: str
+    created_at: Optional[datetime] = None
 
 
 class Listing(BaseModel):

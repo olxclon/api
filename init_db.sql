@@ -5,6 +5,24 @@
 -- Enable pgcrypto for UUID generation (available in Supabase by default)
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
+-- Cities table
+CREATE TABLE IF NOT EXISTS public.cities (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+-- Seed cities
+INSERT INTO public.cities (name)
+VALUES
+    ('Київ'),
+    ('Львів'),
+    ('Одеса'),
+    ('Харків'),
+    ('Дніпро'),
+    ('Запоріжжя')
+ON CONFLICT (name) DO NOTHING;
+
 -- Listings table
 CREATE TABLE IF NOT EXISTS public.listings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
