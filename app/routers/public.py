@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from app.db import get_cities, get_listings
-from app.schemas import City, Listing
+from app.db import get_categories, get_cities, get_listings
+from app.schemas import Category, City, Listing
 
 router = APIRouter(prefix="/public", tags=["public"])
 
@@ -17,3 +17,8 @@ def list_listings() -> list[Listing]:
 @router.get("/cities", response_model=list[City])
 def list_cities() -> list[City]:
     return get_cities()
+
+
+@router.get("/categories", response_model=list[Category])
+def list_categories() -> list[Category]:
+    return get_categories()

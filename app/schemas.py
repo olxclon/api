@@ -30,6 +30,12 @@ class City(BaseModel):
     created_at: Optional[datetime] = None
 
 
+class Category(BaseModel):
+    id: Optional[str] = None
+    name: str
+    created_at: Optional[datetime] = None
+
+
 class Listing(BaseModel):
     id: Optional[str] = None
     title: str

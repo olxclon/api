@@ -39,6 +39,11 @@ def _cities_table() -> Any:
     return _table("cities")
 
 
+def _categories_table() -> Any:
+    """Return a reference to the categories table within the configured schema."""
+    return _table("categories")
+
+
 def _handle_response(response: Any) -> List[Dict[str, Any]]:
     """Validate a Supabase response and normalize errors into HTTPExceptions."""
     error: Optional[Any] = getattr(response, "error", None)
@@ -88,6 +93,12 @@ def get_listings() -> List[Dict[str, Any]]:
 def get_cities() -> List[Dict[str, Any]]:
     """Retrieve all cities from Supabase ordered by name."""
     response = _cities_table().select("*").order("name").execute()
+    return _handle_response(response)
+
+
+def get_categories() -> List[Dict[str, Any]]:
+    """Retrieve all categories from Supabase ordered by name."""
+    response = _categories_table().select("*").order("name").execute()
     return _handle_response(response)
 
 
