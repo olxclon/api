@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
+from app.db import get_listings
 from app.schemas import Listing, LoginRequest, TokenResponse
 from app.security import create_access_token, get_current_user
 
@@ -36,7 +37,7 @@ private_router = APIRouter(prefix="/private", tags=["private"], dependencies=[De
 
 @private_router.get("/listings", response_model=list[Listing])
 def list_listings() -> list[Listing]:
-    return []
+    return get_listings()
 
 
 app.include_router(public_router)
