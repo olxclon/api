@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.routers import private, public
+from app.routers import auth, private, public
 
 settings = get_settings()
 
@@ -16,5 +16,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth.router)
 app.include_router(public.router)
 app.include_router(private.router)
