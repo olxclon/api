@@ -1,10 +1,8 @@
-from fastapi import APIRouter, Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.db import get_listings
-from app.schemas import Listing, LoginRequest, TokenResponse
-from app.security import create_access_token, get_current_user
+from app.routers import private, public
 
 settings = get_settings()
 
@@ -18,27 +16,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-public_router = APIRouter(prefix="/public", tags=["public"])
-
-
-@public_router.get("/health")
-def healthcheck() -> dict[str, str]:
-    return {"status": "ok"}
-
-
-@public_router.post("/login", response_model=TokenResponse)
-def login(request: LoginRequest) -> TokenResponse:
-    token = create_access_token({"sub": request.email})
-    return TokenResponse(access_token=token)
-
-
-private_router = APIRouter(prefix="/private", tags=["private"], dependencies=[Depends(get_current_user)])
-
-
-@private_router.get("/listings", response_model=list[Listing])
-def list_listings() -> list[Listing]:
-    return get_listings()
-
-
-app.include_router(public_router)
-app.include_router(private_router)
+app.include_router(public.router)
+app.include_router(private.router)
